@@ -1,7 +1,8 @@
 # Bibliotecas
 from tkinter import *
 from tkinter import ttk
-# from tkinter import messagebox
+from tkinter import messagebox
+import data_base
 
 # Definir a Janela
 jan = Tk()
@@ -32,21 +33,37 @@ rotulo_senha = Label(frame_dir, text='Senha:', font=('Century Gothic', 20), bg='
 rotulo_senha.place(x=5, y=155)
 senha = ttk.Entry(frame_dir, width=40, show='☠️')
 senha.place(x=120, y=165)
+# show='☠️'
 
+def acesso():
+	senha_db = senha.get()
+	usuario_db = usuario.get()
+	data_base.cursor.execute('''SELECT Usuario, Senha FROM usuarios WHERE (Usuario = ? AND Senha = ?)''', (usuario_db, senha_db))
+	print('Selecionou')
+	verifica_login = data_base.cursor.fetchone()
+	try:
+		if (usuario_db in verifica_login and senha_db in verifica_login):
+			messagebox.showinfo(title='Acesso Concedido', message='Acesso bem sucedido. Bem vindo aos nossos sistemas')
+	except:
+		messagebox.showwarning(title='Acesso Recusado', message='Você digitou o usário ou a senha incorretamente. Verifique e tente novamente.')
+	
 # Botões
-botao_acesso = ttk.Button(frame_dir, text='Entrar', width=20)
+botao_acesso = ttk.Button(frame_dir, text='Entrar', width=20, command=acesso)
 botao_acesso.place(x=90, y=205)
 
 def cadastro():
 	botao_acesso.place(x=5000)
 	botao_registro.place(x=5000)
+
 	rotulo_nome = Label(frame_dir, text='Nome:', font=('Century Gothic', 20), bg='DarkOliveGreen4', fg='White')
 	rotulo_email = Label(frame_dir, text='E-mail:', font=('Century Gothic', 20), bg='DarkOliveGreen4', fg='White')
+
 	rotulo_nome.place(x=5, y=15)
 	rotulo_email.place(x=5, y=60)
 
 	email = ttk.Entry(frame_dir, width=40)
 	nome = ttk.Entry(frame_dir, width=40)
+
 	email.place(x=120, y=75)
 	nome.place(x=120, y=30)
 
@@ -57,10 +74,26 @@ def cadastro():
 		rotulo_email.place(x=5000)
 		email.place(x=5000)
 		nome.place(x=5000)
+
 		botao_acesso.place(x=90, y=205)
 		botao_registro.place(x=230, y=205)
 
-	botao_cadastro = ttk.Button(frame_dir, text='Cadastrar', width=20)
+	def cadastro_banco_dados():
+		nome_db = nome.get()
+		email_db = email.get()
+		senha_db = senha.get()
+		usuario_db = usuario.get()
+
+		if 	(nome_db == '' or email_db =='' or senha_db == '' or usuario_db == '') :
+			messagebox.showerror(title='Erro de Cadastro', message = 'O cadastro não pode ser realizado pois um dos campos não foi preenchido. Verifique e tente novamente')
+		else:
+			data_base.cursor.execute('''
+			INSERT INTO usuarios(Nome, Email, Usuario, Senha) VALUES(?, ?, ?, ?)
+			''', (nome_db, email_db, usuario_db, senha_db))
+			data_base.conn.commit()
+			messagebox.showinfo(title='Informação de Registro', message='Cadastro realizado com sucesso!')
+
+	botao_cadastro = ttk.Button(frame_dir, text='Cadastrar', width=20, command=cadastro_banco_dados)
 	botao_voltar = ttk.Button(frame_dir, text='Voltar', width=20, command=voltar)
 
 

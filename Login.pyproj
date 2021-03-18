@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>f316062a-e339-4c10-bc24-16cf530626b1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>data_base.py</StartupFile>
+    <StartupFile>main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,7 +26,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="index.py">
+    <Compile Include="main.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="data_base.py">
@@ -35,7 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|VisualStudio|Ambiente Virtual Padrão" />
-    <InterpreterReference Include="Global|VisualStudio|Python3.9" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="icons\" />
